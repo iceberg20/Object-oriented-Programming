@@ -59,6 +59,16 @@ puts "###################################"
 puts
 puts
 
+adBook = AdressBook.new 
+firstAdress = Adress.new("Av. Ayrton Senna",2023, 59151902)
+secondAdress = Adress.new("Av. Salgado Filho",5050, 599000)
+c1 = Contact.new("Mateus","9999-8888", firstAdress)
+c2 = Contact.new("Julia","7777-6666", secondAdress)
+adBook.addContact(c1)
+adBook.addContact(c2)
+adBook.showAdresses
+
+=begin
 op = 10
 while op!=0 do
 	puts "Menu 1- Add Contact 2- Show Contacts"
@@ -78,6 +88,11 @@ while op!=0 do
 		adr = Adress.new(street,adrNumber, postal)
 
 		c1 = Contact.new(name,phone, adr)
-	end
+
+		adBook.addContact(c1)
+	else
+
+
 
 end
+=end
