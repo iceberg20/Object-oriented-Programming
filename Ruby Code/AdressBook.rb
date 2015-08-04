@@ -7,6 +7,18 @@ class AdressBook
 		@adresses.push(contact)
 	end
 
+	def removeContact(name)
+		index = 0
+		@adresses.each do |contact|
+			index = index+1
+			if contact.name == name
+				@adresses.delete(contact)
+				puts "Contato Removido com sucesso!"
+				self.showAdresses
+			end
+		end
+	end
+
 	def showAdresses
 		@adresses.each do |contato|
 			contato.showContact
@@ -27,10 +39,15 @@ class Adress
 end
 
 class Contact
+	
 	def initialize(name,phone,adr)
 		@name = name
 		@phone = phone
 		@adr = adr
+	end
+
+	def name
+		@name
 	end
 
 	def showContact
@@ -63,10 +80,13 @@ adBook = AdressBook.new
 firstAdress = Adress.new("Av. Ayrton Senna",2023, 59151902)
 secondAdress = Adress.new("Av. Salgado Filho",5050, 599000)
 c1 = Contact.new("Mateus","9999-8888", firstAdress)
-c2 = Contact.new("Julia","7777-6666", secondAdress)
+c2 = Contact.new("Renato","7777-6666", secondAdress)
+
 adBook.addContact(c1)
 adBook.addContact(c2)
 adBook.showAdresses
+s = gets.chomp
+adBook.removeContact(s)
 
 =begin
 op = 10
