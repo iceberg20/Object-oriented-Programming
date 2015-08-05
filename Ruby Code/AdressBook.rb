@@ -11,17 +11,30 @@ class AdressBook
 	end
 
 	def removeContact(name)
+		removed = false
 		name = name.chomp
 		index = 0
 		@adresses.each do |contact|
 			index = index+1
 			if contact.name == name
 				@adresses.delete(contact)
-				puts "Contact Removed successfully!"
 				puts "> > Updated Contacts List < < "
 				self.showAdresses
+				removed = true
 			end
 		end
+		return removed
+	end	
+
+	def find(name)
+		out = false
+		@adresses.each do |contact|
+			if contact.name == name
+				out = true
+				self.removeContact(name)
+			end
+		end
+		return out
 	end
 
 	def showAdresses
@@ -84,7 +97,7 @@ adBook.addContact(c2)
 adBook.showAdresses
 =end
 puts "###################################"
-puts "### Welcome to the AdressBook! ####"
+puts "### Welcome to the E-AdressBook! ####"
 puts "### Developed by Ítalo Berg #######"
 puts "###################################"
 puts
@@ -92,7 +105,7 @@ puts
 
 adBook = AdressBook.new 
 
-
+=begin
 firstAdress = Adress.new("Av. Ayrton Senna",2023, 59151902)
 secondAdress = Adress.new("Av. Salgado Filho",5050, 599000)
 c1 = Contact.new("Mateus","9999-8888", firstAdress)
@@ -105,10 +118,10 @@ adBook.showAdresses
 #adBook.removeContact(s)
 
 
-
+=end
 op = 10
 while op!=0 do
-	puts "Menu 1- Add Contact 2- Remove Contact  3-Show Contacts"
+	puts "Menu 1- Add Contact 2- Remove Contact  3-Show Contacts 4-Update 0-Exit"
 	op = gets.to_i	
 	if op == 1 then
 		puts "Type the name:"
@@ -130,10 +143,40 @@ while op!=0 do
 	elsif op == 2
 		puts "Tye the name of the contact"
 		name = gets.chomp
-		adBook.removeContact(name)
+		if adBook.removeContact(name)
+			puts "Contact Removed successfully!"
+		else
+			puts "Contact not found"
+		end
 	elsif op==3
 		adBook.showAdresses
+	elsif op==4
+		puts "> > Update < <"
+		puts "What contatc do you would like to update?"
+		name  = gets.chomp
+		if adBook.find(name)
+			puts "> > Let's update! < <"
+			puts "Type the name:"
+			name = gets
+			puts "Type the phone number"
+			phone = gets
+			puts "Type the street"
+			street = gets
+			puts "Type the adress number"
+			adrNumber = gets
+			puts "Type the postal code"
+			postal = gets
+
+			adr = Adress.new(street,adrNumber, postal)
+
+			c1 = Contact.new(name,phone, adr)
+
+			adBook.addContact(c1)
+		else
+			puts "Sorry, contact not found"
+		end
 	else
 		puts "Thanks for using the E-Adressbook!"
+		op = 0
 	end
 end
