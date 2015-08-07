@@ -99,7 +99,7 @@ adBook.showAdresses
 puts "###################################"
 puts "### Welcome to the E-AdressBook! ####"
 puts "### Developed by Ítalo Berg #######"
-puts "###################################"
+puts "####################################"
 puts
 puts
 
