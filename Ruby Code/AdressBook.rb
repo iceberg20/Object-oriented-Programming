@@ -1,11 +1,41 @@
+class Controller
+	def permitAdd(adBookRef, street, adrNumber, postal, name, phone)
+		adr = Adress.new(street,adrNumber, postal)
+		contactRef = Contact.new(name,phone, adr)
+		adRef = adBookRef.adresses
+		permit = true
+		adRef.each do |contact|
+			puts ">>>>>>>>> #{contact} = #{name}"
+			if contact == name
+				permit = false
+			end
+		end
+		if permit 
+			adBookRef.addContact(contactRef)
+			return true
+		else
+			return false
+		end
+	end
+
+	def permitSearch(adBookRef, name)
+		if name.class == "String"
+			adBookRef.search(name)
+		end
+	end
+end
+
 class AdressBook
 	def initialize
 		@adresses = Array.new
 	end
 
+	def adresses
+		@adresses
+	end
+
 	def addContact(contact)
 		@adresses.push(contact)
-		puts "Contact Added successfully!"
 		puts "> > Updated Contacts List < < "
 		self.showAdresses
 	end
@@ -47,6 +77,16 @@ class AdressBook
 			puts "Your list is empty! Please add some contats!"
 			puts
 		end
+	end
+
+	def search(name)
+		out = nil
+		@adresses.each do |contact|
+			if contact.name == name
+				out = contact
+			end
+		end
+		return out
 	end
 end
 
@@ -104,6 +144,7 @@ puts
 puts
 
 adBook = AdressBook.new 
+appController = Controller.new
 
 =begin
 firstAdress = Adress.new("Av. Ayrton Senna",2023, 59151902)
@@ -125,7 +166,7 @@ while op!=0 do
 	op = gets.to_i	
 	if op == 1 then
 		puts "Type the name:"
-		name = gets
+		name = gets.chomp
 		puts "Type the phone number"
 		phone = gets
 		puts "Type the street"
@@ -135,11 +176,12 @@ while op!=0 do
 		puts "Type the postal code"
 		postal = gets
 
-		adr = Adress.new(street,adrNumber, postal)
+		if appController.permitAdd(adBook, street, adrNumber, postal, name, phone)
+			puts "Contact Added successfully!"
+		else
+			puts "Sorry but this name of contact already was used"
+		end
 
-		c1 = Contact.new(name,phone, adr)
-
-		adBook.addContact(c1)
 	elsif op == 2
 		puts "Tye the name of the contact"
 		name = gets.chomp
@@ -171,7 +213,7 @@ while op!=0 do
 
 			c1 = Contact.new(name,phone, adr)
 
-			adBook.addContact(c1)
+			appController.permitAdd(adBook,c1)
 		else
 			puts "Sorry, contact not found"
 		end
