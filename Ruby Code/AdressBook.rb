@@ -5,8 +5,7 @@ class Controller
 		adRef = adBookRef.adresses
 		permit = true
 		adRef.each do |contact|
-			puts ">>>>>>>>> #{contact} = #{name}"
-			if contact == name
+			if contact.phone == phone
 				permit = false
 			end
 		end
@@ -21,6 +20,9 @@ class Controller
 	def permitSearch(adBookRef, name)
 		if name.class == "String"
 			adBookRef.search(name)
+			return true
+		else
+			return false
 		end
 	end
 end
@@ -116,6 +118,10 @@ class Contact
 		@name
 	end
 
+	def phone
+		@phone
+	end
+
 	def showContact
 		puts "Name: #{@name}"
 		puts "Phone: #{@phone}"
@@ -162,7 +168,7 @@ adBook.showAdresses
 =end
 op = 10
 while op!=0 do
-	puts "Menu 1- Add Contact 2- Remove Contact  3-Show Contacts 4-Update 0-Exit"
+	puts "Menu 1- Add Contact 2- Remove Contact  3-Show Contacts 4-Update 5-Search 0-Exit"
 	op = gets.to_i	
 	if op == 1 then
 		puts "Type the name:"
@@ -199,11 +205,11 @@ while op!=0 do
 		if adBook.find(name)
 			puts "> > Let's update! < <"
 			puts "Type the name:"
-			name = gets
+			name = gets.chomp
 			puts "Type the phone number"
-			phone = gets
+			phone = gets.chomp
 			puts "Type the street"
-			street = gets
+			street = gets.chomp
 			puts "Type the adress number"
 			adrNumber = gets
 			puts "Type the postal code"
@@ -215,7 +221,18 @@ while op!=0 do
 
 			appController.permitAdd(adBook,c1)
 		else
-			puts "Sorry, contact not found"
+			puts "Contact not found"
+		end
+	elsif op==5
+		puts "> > Search < <"
+		puts "Type the name:"
+		name = gets.chomp
+		puts appController.permitSearch(adBook, name)
+		if appController.permitSearch(adBook, name)
+
+			appController.permitSearch(adBook, name).showContact
+		else
+			"Contact not found"
 		end
 	else
 		puts "Thanks for using the E-Adressbook!"
